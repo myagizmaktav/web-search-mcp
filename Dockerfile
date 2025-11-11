@@ -75,6 +75,7 @@ RUN npm ci --only=production && npm cache clean --force
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
 
+RUN npx playwright install             
 # Install Playwright browsers
 RUN npx playwright install --with-deps chromium
 
