@@ -124,18 +124,18 @@ You can also run this MCP server using Docker for easier deployment and isolatio
 1. **Build the Docker image:**
 
    ```bash
-   docker build -t web-search-mcp .
+   docker build -t foxsnow/web-search-mcp .
    ```
 
 2. **Run the container:**
    ```bash
-   docker run -it --name web-search-mcp-server web-search-mcp
+   docker run -i --rm foxsnow/web-search-mcp
    ```
 
 ```json
 "web-search-mcp": {
   "command": "docker",
-  "args": ["run", "-i", "--rm", "web-search-mcp"]
+  "args": ["run", "-i", "--rm", "foxsnow/web-search-mcp"]
 }
 ```
 

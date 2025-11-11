@@ -3,6 +3,7 @@ version: "3.8"
 services:
   web-search-mcp:
     build: .
+    image: foxsnow/web-search-mcp:latest
     container_name: web-search-mcp-server
     # Uncomment the following lines if you need to pass environment variables
     # environment:

@@ -7,14 +7,13 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for building)
+RUN npm ci
 
 # Copy source code
 COPY src/ ./src/
 COPY tsconfig.json ./
-RUN npm -g install typescript
-RUN npm i
+
 # Build the TypeScript code
 RUN npm run build
 
@@ -69,20 +68,24 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies only
+# Install production dependencies only (including playwright)
 RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
 
-RUN npx playwright install             
-# Install Playwright browsers
+# Install Playwright browsers (must be done before switching to appuser)
 RUN npx playwright install --with-deps chromium
 
 # Create a non-root user for security
 RUN useradd --create-home --shell /bin/bash appuser && \
-    chown -R appuser:appuser /app
+    mkdir -p /home/appuser/.cache && \
+    chown -R appuser:appuser /app && \
+    chown -R appuser:appuser /home/appuser
 USER appuser
+
+# Set environment variables for Playwright
+ENV PLAYWRIGHT_BROWSERS_PATH=/home/appuser/.cache/ms-playwright
 
 # Expose port (if needed for future extensions)
 # EXPOSE 3000

@@ -19,7 +19,7 @@ dist
 *.swp
 *.swo
 
-# OS files
+# OS filesw
 .DS_Store
 Thumbs.db
 
